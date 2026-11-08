@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Science;Robotics;
+Comment=Developed by Kartikay Srivastava. Rotation conversion demo for axis-angle, rotation matrix, quaternion, and Euler angle representations
+Exec=rlRotationConverterDemo
+Icon=robotics-library
+Keywords=Angle;Axis;Euler;Library;Matrix;Quaternion;Robot;Robotics;Rotation;
+Name=Kartikay Srivastava Robotics - rlRotationConverterDemo
+Type=Application
+X-Unity-IconBackgroundColor=#ffffff

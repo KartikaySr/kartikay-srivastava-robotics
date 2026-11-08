@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Science;Robotics;
+Comment=Developed by Kartikay Srivastava. Path planning demo with Unimation Puma 560 and RRT algorithm
+Exec=sh -c "rlPlanDemo $(dirname %k)/../rl-@PROJECT_VERSION@/examples/rlplan/unimation-puma560_boxes_rrtConCon.mdl.xml"
+Icon=robotics-library
+Keywords=Library;Motion;Path;Planning;Puma;Robot;Robotics;RRT;
+Name=Kartikay Srivastava Robotics - rlPlanDemo
+Type=Application
+X-Unity-IconBackgroundColor=#ffffff

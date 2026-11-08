@@ -1,0 +1,282 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  build-macos:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-14
+    env:
+      CCACHE_COMPRESS: true
+      CCACHE_MAXSIZE: 500M
+      CMAKE_C_COMPILER_LAUNCHER: ccache
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up tap
+        run: brew tap roboticslibrary/rl
+      - name: Update index
+        run: brew update
+      - name: Install dependencies
+        run: >
+          brew install
+          boost
+          bullet
+          ccache
+          cmake
+          coin3d
+          eigen
+          fcl
+          ninja
+          nlopt
+          ode
+          pqp
+          solid
+      - name: Update environment variables
+        run: |
+          echo "CCACHE_BASEDIR=${{ runner.workspace }}" >> $GITHUB_ENV
+          echo "CCACHE_DIR=${{ runner.workspace }}/.ccache" >> $GITHUB_ENV
+      - name: Cache compiler
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.workspace }}/.ccache
+          key: ${{ matrix.os }}-ccache-${{ github.sha }}
+          restore-keys: ${{ matrix.os }}-ccache-
+      - name: Configure CMake
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+      - name: Build
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cmake --build .
+      - name: Test
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: ctest --output-on-failure
+      - name: Create archive
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cpack -G TXZ
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}
+          path: ${{ runner.workspace }}/rl-build/rl-*.tar.xz
+  build-msvc:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-2019
+          - windows-2022
+        qt:
+          - qt5
+          - qt6
+        include:
+          - os: windows-2019
+            toolset: 14.2
+          - os: windows-2022
+            toolset: 14.4
+    env:
+      CCACHE_COMPRESS: true
+      CCACHE_MAXSIZE: 500M
+      CMAKE_C_COMPILER_LAUNCHER: ccache
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Enable Developer Command Prompt
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Install dependencies
+        working-directory: ${{ runner.workspace }}
+        run: |
+          curl -L https://github.com/roboticslibrary/rl-3rdparty/releases/download/latest/rl-3rdparty-msvc-${{ matrix.toolset }}-x64-${{ matrix.qt }}.7z -o rl-3rdparty.7z
+          7z x rl-3rdparty.7z -orl-3rdparty-install
+          Write-Output "CMAKE_PREFIX_PATH=${{ runner.workspace }}\rl-3rdparty-install" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Output "${{ runner.workspace }}\rl-3rdparty-install\bin" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Install ccache
+        working-directory: ${{ runner.workspace }}
+        run: |
+          curl -L https://github.com/ccache/ccache/releases/download/v4.11.2/ccache-4.11.2-windows-x86_64.zip -o ccache-4.11.2-windows-x86_64.zip
+          7z x ccache-4.11.2-windows-x86_64.zip
+          Write-Output "${{ runner.workspace }}\ccache-4.11.2-windows-x86_64" | Out-File -FilePath $Env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Update environment variables
+        run: |
+          Write-Output "CCACHE_BASEDIR=${{ runner.workspace }}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Output "CCACHE_DIR=${{ runner.workspace }}\.ccache" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Cache compiler
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.workspace }}/.ccache
+          key: ${{ matrix.os }}-msvc-${{ matrix.toolset }}-${{ matrix.qt }}-ccache-${{ github.sha }}
+          restore-keys: ${{ matrix.os }}-msvc-${{ matrix.toolset }}-${{ matrix.qt }}-ccache-
+      - name: Configure CMake
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+      - name: Build
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cmake --build .
+      - name: Test
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: ctest --output-on-failure
+      - name: Create archive
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cpack -G 7Z
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-msvc-${{ matrix.toolset }}-${{ matrix.qt }}
+          path: ${{ runner.workspace }}/rl-build/rl-*.7z
+  build-msys2:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-2022
+        sys:
+          - ucrt64
+    env:
+      CCACHE_COMPRESS: true
+      CCACHE_MAXSIZE: 500M
+      CMAKE_C_COMPILER_LAUNCHER: ccache
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.sys}}
+          pacboy: >-
+            boost:p
+            bullet:p
+            ccache:p
+            cmake:p
+            coin:p
+            eigen3:p
+            libxml2:p
+            libxslt:p
+            ninja:p
+            nlopt:p
+            ode:p
+            pqp:p
+            solid3:p
+            soqt:p
+            toolchain:p
+          update: true
+      - name: Update environment variables
+        run: |
+          echo "CCACHE_BASEDIR=${{ runner.workspace }}" >> $GITHUB_ENV
+          echo "CCACHE_DIR=${{ runner.workspace }}/.ccache" >> $GITHUB_ENV
+      - name: Cache compiler
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.workspace }}/.ccache
+          key: ${{ matrix.os }}-msys2-${{ matrix.sys }}-ccache-${{ github.sha }}
+          restore-keys: ${{ matrix.os }}-msys2-${{ matrix.sys }}-ccache-
+      - name: Configure CMake
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+      - name: Build
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cmake --build .
+      - name: Test
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: ctest --output-on-failure
+      - name: Create archive
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cpack -G TXZ
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-msys2-${{ matrix.sys }}
+          path: ${{ runner.workspace }}/rl-build/rl-*.tar.xz
+  build-ubuntu:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-24.04
+        compiler:
+          - cc: clang
+            cxx: clang++
+          - cc: gcc
+            cxx: g++
+    env:
+      CC: ${{ matrix.compiler.cc }}
+      CCACHE_COMPRESS: true
+      CCACHE_MAXSIZE: 500M
+      CMAKE_C_COMPILER_LAUNCHER: ccache
+      CMAKE_CXX_COMPILER_LAUNCHER: ccache
+      CXX: ${{ matrix.compiler.cxx }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up PPA
+        run: |
+          sudo apt-get install -y software-properties-common
+          sudo apt-add-repository -y -u ppa:roblib/ppa
+      - name: Update index
+        run: sudo apt-get update
+      - name: Install dependencies
+        run: >
+          sudo apt-get install -y
+          build-essential
+          ccache
+          clang
+          cmake
+          libboost-dev
+          libbullet-dev
+          libcomedi-dev
+          libdc1394-dev
+          libeigen3-dev
+          libfcl-dev
+          libnlopt-dev
+          libode-dev
+          libpqp-dev
+          libsimage-dev
+          libsolid3d-dev
+          libsoqt-dev
+          libxml2-dev
+          libxslt1-dev
+          ninja-build
+      - name: Update environment variables
+        run: |
+          echo "CCACHE_BASEDIR=${{ runner.workspace }}" >> $GITHUB_ENV
+          echo "CCACHE_DIR=${{ runner.workspace }}/.ccache" >> $GITHUB_ENV
+      - name: Cache compiler
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.workspace }}/.ccache
+          key: ${{ matrix.os }}-${{ matrix.compiler.cc }}-ccache-${{ github.sha }}
+          restore-keys: ${{ matrix.os }}-${{ matrix.compiler.cc }}-ccache-
+      - name: Configure CMake
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+      - name: Build
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cmake --build .
+      - name: Test
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: ctest --output-on-failure
+      - name: Create archive
+        working-directory: ${{ runner.workspace }}/rl-build
+        run: cpack -G TXZ
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.compiler.cc }}
+          path: ${{ runner.workspace }}/rl-build/rl-*.tar.xz

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Science;Robotics;
+Comment=Developed by Kartikay Srivastava. Collision detection and distance computation demo with basic scene
+Exec=sh -c "rlCollisionDemo $(dirname %k)/../rl-@PROJECT_VERSION@/examples/rlsg/scene.xml"
+Icon=robotics-library
+Keywords=Collision;Detection;Distance;Robot;Robotics;
+Name=Kartikay Srivastava Robotics - rlCollisionDemo
+Type=Application
+X-Unity-IconBackgroundColor=#ffffff
