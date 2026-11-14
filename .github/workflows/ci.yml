@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-14
+          - macos-15
     env:
       CCACHE_COMPRESS: true
       CCACHE_MAXSIZE: 500M
@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up tap
-        run: brew tap roboticslibrary/rl
       - name: Update index
         run: brew update
       - name: Install dependencies
@@ -36,6 +34,7 @@ jobs:
           ccache
           cmake
           coin3d
+          qtbase
           libxml2
           libxslt
           eigen
@@ -43,8 +42,6 @@ jobs:
           ninja
           nlopt
           ode
-          pqp
-          solid
       - name: Update environment variables
         run: |
           echo "CCACHE_BASEDIR=${{ runner.workspace }}" >> $GITHUB_ENV
