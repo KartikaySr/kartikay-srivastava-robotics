@@ -2,13 +2,17 @@ name: CodeQL
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
   schedule:
     - cron: '30 14 * * 2'
   workflow_dispatch:
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   analyze:
     name: Analyze
@@ -48,7 +52,7 @@ jobs:
         run: >
           cmake
           -GNinja
-          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_BUILD_TYPE=Release -DRL_REQUIRE_DESKTOP=ON
           -S"${{ github.workspace }}"
           -B"${{ runner.workspace }}/rl-build"
       - name: Build

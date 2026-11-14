@@ -24,6 +24,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <cassert>
 #include <iostream>
 #include <memory>
 #include <random>

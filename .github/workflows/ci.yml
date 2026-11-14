@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
   workflow_dispatch:
 jobs:
   build-macos:
@@ -36,6 +36,8 @@ jobs:
           ccache
           cmake
           coin3d
+          libxml2
+          libxslt
           eigen
           fcl
           ninja
@@ -54,7 +56,7 @@ jobs:
           key: ${{ matrix.os }}-ccache-${{ github.sha }}
           restore-keys: ${{ matrix.os }}-ccache-
       - name: Configure CMake
-        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DRL_REQUIRE_DESKTOP=ON -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
       - name: Build
         working-directory: ${{ runner.workspace }}/rl-build
         run: cmake --build .
@@ -68,7 +70,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}
-          path: ${{ runner.workspace }}/rl-build/rl-*.tar.xz
+          if-no-files-found: error
+          path: ${{ runner.workspace }}/rl-build/kartikay-srivastava-robotics-*.tar.xz
   build-msvc:
     name: Build
     runs-on: ${{ matrix.os }}
@@ -76,14 +79,11 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - windows-2019
           - windows-2022
         qt:
           - qt5
           - qt6
         include:
-          - os: windows-2019
-            toolset: 14.2
           - os: windows-2022
             toolset: 14.4
     env:
@@ -120,7 +120,7 @@ jobs:
           key: ${{ matrix.os }}-msvc-${{ matrix.toolset }}-${{ matrix.qt }}-ccache-${{ github.sha }}
           restore-keys: ${{ matrix.os }}-msvc-${{ matrix.toolset }}-${{ matrix.qt }}-ccache-
       - name: Configure CMake
-        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DRL_REQUIRE_DESKTOP=ON -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
       - name: Build
         working-directory: ${{ runner.workspace }}/rl-build
         run: cmake --build .
@@ -134,7 +134,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-msvc-${{ matrix.toolset }}-${{ matrix.qt }}
-          path: ${{ runner.workspace }}/rl-build/rl-*.7z
+          if-no-files-found: error
+          path: ${{ runner.workspace }}/rl-build/kartikay-srivastava-robotics-*.7z
   build-msys2:
     name: Build
     runs-on: ${{ matrix.os }}
@@ -188,7 +189,7 @@ jobs:
           key: ${{ matrix.os }}-msys2-${{ matrix.sys }}-ccache-${{ github.sha }}
           restore-keys: ${{ matrix.os }}-msys2-${{ matrix.sys }}-ccache-
       - name: Configure CMake
-        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DRL_REQUIRE_DESKTOP=ON -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
       - name: Build
         working-directory: ${{ runner.workspace }}/rl-build
         run: cmake --build .
@@ -202,7 +203,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-msys2-${{ matrix.sys }}
-          path: ${{ runner.workspace }}/rl-build/rl-*.tar.xz
+          if-no-files-found: error
+          path: ${{ runner.workspace }}/rl-build/kartikay-srivastava-robotics-*.tar.xz
   build-ubuntu:
     name: Build
     runs-on: ${{ matrix.os }}
@@ -265,13 +267,17 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.compiler.cc }}-ccache-${{ github.sha }}
           restore-keys: ${{ matrix.os }}-${{ matrix.compiler.cc }}-ccache-
       - name: Configure CMake
-        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
+        run: cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DRL_REQUIRE_DESKTOP=ON -S"${{ github.workspace }}" -B"${{ runner.workspace }}/rl-build"
       - name: Build
         working-directory: ${{ runner.workspace }}/rl-build
         run: cmake --build .
       - name: Test
         working-directory: ${{ runner.workspace }}/rl-build
         run: ctest --output-on-failure
+      - name: Smoke-test installed desktop
+        run: |
+          cmake --install "${{ runner.workspace }}/rl-build" --prefix "${{ runner.workspace }}/rl-install"
+          QT_QPA_PLATFORM=offscreen timeout 5 "${{ runner.workspace }}/rl-install/bin/rlRotationConverterDemo" || test "$?" -eq 124
       - name: Create archive
         working-directory: ${{ runner.workspace }}/rl-build
         run: cpack -G TXZ
@@ -279,4 +285,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.compiler.cc }}
-          path: ${{ runner.workspace }}/rl-build/rl-*.tar.xz
+          if-no-files-found: error
+          path: ${{ runner.workspace }}/rl-build/kartikay-srivastava-robotics-*.tar.xz

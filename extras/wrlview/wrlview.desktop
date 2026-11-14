@@ -1,9 +1,9 @@
 [Desktop Entry]
 Categories=Graphics;3DGraphics;
-Comment=Viewer for VRML and Open Inventor files
+Comment=Developed by Kartikay Srivastava. Viewer for VRML and Open Inventor files
 Exec=wrlview %f
-Icon=wrlview
+Icon=robotics-library
 Keywords=Inventor;Open;Viewer;VRML;
 MimeType=graphics/x-inventor;model/vrml;object/x-inventor;x-world/x-vrml;
-Name=wrlview
+Name=Kartikay Srivastava Robotics - wrlview
 Type=Application

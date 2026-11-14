@@ -53,6 +53,8 @@ if(QT_FOUND AND SoQt_FOUND)
 		${rl_BINARY_DIR}/robotics-library.rc
 	)
 	
+	rl_add_desktop_resources(rlCoachKin)
+
 	target_link_libraries(
 		rlCoachKin
 		kin

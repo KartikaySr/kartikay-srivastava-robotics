@@ -53,6 +53,8 @@ if(QT_FOUND AND SoQt_FOUND)
 		${rl_BINARY_DIR}/robotics-library.rc
 	)
 	
+	rl_add_desktop_resources(rlCoachMdl)
+
 	target_link_libraries(
 		rlCoachMdl
 		math

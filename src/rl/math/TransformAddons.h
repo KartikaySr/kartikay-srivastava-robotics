@@ -204,7 +204,7 @@ toDenavitHartenbergPaul(OtherScalar1& d, OtherScalar2& theta, OtherScalar3& a, O
 	using ::std::abs;
 	using ::std::atan2;
 	
-	assert(abs((*this)(2, 0)) <= ::std::numeric_limits<Scalar>::epsilon());
+	eigen_assert(abs((*this)(2, 0)) <= ::std::numeric_limits<Scalar>::epsilon());
 	
 	d = (*this)(2, 3);
 	theta = atan2((*this)(1, 0), (*this)(0, 0));

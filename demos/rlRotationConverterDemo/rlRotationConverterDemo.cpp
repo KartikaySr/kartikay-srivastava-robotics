@@ -25,6 +25,7 @@
 //
 
 #include <QApplication>
+#include "Application.h"
 #include <QMessageBox>
 #include <stdexcept>
 
@@ -38,6 +39,7 @@ main(int argc, char** argv)
 	try
 	{
 		QApplication application(argc, argv);
+		configureDesktopApplication();
 		
 		QObject::connect(&application, SIGNAL(lastWindowClosed()), &application, SLOT(quit()));
 		
@@ -48,6 +50,7 @@ main(int argc, char** argv)
 	catch (const std::exception& e)
 	{
 		QApplication application(argc, argv);
+		configureDesktopApplication();
 		QMessageBox::critical(nullptr, "Error", e.what());
 		return EXIT_FAILURE;
 	}

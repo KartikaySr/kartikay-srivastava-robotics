@@ -49,6 +49,8 @@ if(QT_FOUND)
 		${rl_BINARY_DIR}/robotics-library.rc
 	)
 	
+	rl_add_desktop_resources(rlRotationConverterDemo)
+
 	target_link_libraries(
 		rlRotationConverterDemo
 		math

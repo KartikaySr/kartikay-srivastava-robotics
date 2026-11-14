@@ -1,5 +1,6 @@
 #include <chrono>
 #include <iostream>
+#include <stdexcept>
 #include <vector>
 #include <rl/math/GnatNearestNeighbors.h>
 #include <rl/math/KdtreeBoundingBoxNearestNeighbors.h>
@@ -91,9 +92,25 @@ test(const std::vector<rl::math::Vector>& points, const std::vector<rl::math::Ve
 	typedef rl::math::metrics::L2<const rl::math::Vector*> Metric;
 	typedef rl::math::metrics::L2Squared<const rl::math::Vector*> MetricSquared;
 	
+	rl::math::KdtreeBoundingBoxNearestNeighbors<Metric> first, second;
+	first.push(&points[0]);
+	second.push(&points[1]);
+	first.setChecks(1);
+	second.setChecks(2);
+	first.setNodeDataMax(3);
+	second.setNodeDataMax(4);
+	first.swap(second);
+	if (first.getChecks().value() != 2 || second.getChecks().value() != 1 ||
+		first.getNodeDataMax() != 4 || second.getNodeDataMax() != 3 ||
+		first.nearest(&points[1], 1).front().second != &points[1] ||
+		second.nearest(&points[0], 1).front().second != &points[0])
+	{
+		throw std::runtime_error("Bounding-box tree swap lost data or configuration");
+	}
+
 	std::cout << "** LinearNearestNeighbors<Metric> *********************************************" << std::endl;
 	std::vector<std::vector<rl::math::LinearNearestNeighbors<Metric>::Neighbor>> linear = test<rl::math::LinearNearestNeighbors<Metric>>(points, queries, iterative, false);
-	
+
 	std::cout << "** LinearNearestNeighbors<MetricSquared> **************************************" << std::endl;
 	std::vector<std::vector<rl::math::LinearNearestNeighbors<MetricSquared>::Neighbor>> linear2 = test<rl::math::LinearNearestNeighbors<MetricSquared>>(points, queries, iterative, true);
 	

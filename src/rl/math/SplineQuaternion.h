@@ -27,6 +27,7 @@
 #ifndef RL_MATH_QUATERNIONSPLINE_H
 #define RL_MATH_QUATERNIONSPLINE_H
 
+#include <cassert>
 #include <limits>
 #include <vector>
 

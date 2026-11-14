@@ -8,7 +8,7 @@ This edition builds on the work acknowledged in [CONTRIBUTORS.md](CONTRIBUTORS.m
 
 ## Build from source
 
-Use a C++11 compiler and CMake 3.1 or newer. Install the dependencies required by the enabled components; these include Eigen3 for mathematics, Boost for several components, LibXml2/LibXslt for XML, and Qt/Coin3D/SoQt for graphical demos. Collision backends and hardware drivers have additional optional dependencies.
+Use a C++17 compiler and CMake 3.1 or newer. Install the dependencies required by the enabled components; these include Eigen3 for mathematics, Boost for several components, LibXml2/LibXslt for XML, and Qt/Coin3D/SoQt for graphical demos. Collision backends and hardware drivers have additional optional dependencies.
 
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
@@ -22,6 +22,34 @@ For CMake versions older than 3.13, configure with `mkdir build`, `cd build`, an
 Disable graphical applications with `-DRL_BUILD_DEMOS=OFF -DRL_BUILD_EXTRAS=OFF`. The `RL_BUILD_*` options select library components and tests. API documentation can be built with Doxygen using `-DRL_BUILD_DOCUMENTATION=ON`.
 
 Build this edition from the included source. External packages and release downloads referenced in the contributor resources belong to the upstream project.
+
+## Desktop applications and packages
+
+On macOS, install the desktop dependencies with Homebrew before configuring:
+
+```sh
+brew install cmake boost eigen coin3d qtbase fcl libxml2 libxslt
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(brew --prefix);$(brew --prefix qtbase);$(brew --prefix libxml2);$(brew --prefix libxslt)"
+```
+
+Launch the rotation converter directly, or open the included Puma robot in the kinematics and dynamics applications:
+
+```sh
+./build/bin/rlRotationConverterDemo
+./build/bin/rlCoachMdl examples/rlsg/unimation-puma560_boxes.xml examples/rlmdl/unimation-puma560.xml
+./build/bin/rlSimulator examples/rlsg/unimation-puma560_boxes.xml examples/rlmdl/unimation-puma560.xml
+```
+
+The Qt applications embed the project icon and identify Kartikay Srivastava as the project maintainer. SoQt must match the selected Qt major version for the 3D applications. Optional hardware and collision backends are enabled when their dependencies are available.
+
+For release builds, configure with `-DRL_REQUIRE_DESKTOP=ON` to fail early if any desktop application or its dependencies are unavailable. After a successful build and test run, create a distribution archive:
+
+```sh
+cd build
+cpack -G TGZ
+```
+
+Extract the archive and run programs from its `bin` directory. Models are installed under `share/rl-0.7.0/examples`. Archives include the project libraries, examples, and license/credit files. Install matching third-party runtime dependencies on the destination system. The `main` branch CI builds, tests, and uploads platform-specific archives to GitHub Actions.
 
 ## Examples and demos
 

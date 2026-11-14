@@ -27,6 +27,7 @@
 #ifndef RL_MATH_KDTREENEARESTNEIGHBORS_H
 #define RL_MATH_KDTREENEARESTNEIGHBORS_H
 
+#include <cassert>
 #include <algorithm>
 #include <array>
 #include <cmath>

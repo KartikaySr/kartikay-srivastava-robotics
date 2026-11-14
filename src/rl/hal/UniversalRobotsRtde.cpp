@@ -24,6 +24,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <cassert>
 #include <array>
 #include <iostream>
 #include <rl/math/Constants.h>

@@ -31,6 +31,7 @@
 #define EIGEN_QUATERNIONBASE_PLUGIN <rl/math/QuaternionBaseAddons.h>
 #define EIGEN_TRANSFORM_PLUGIN <rl/math/TransformAddons.h>
 
+#include <cassert>
 #include <Eigen/Core>
 #include <Eigen/LU>
 

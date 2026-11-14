@@ -24,6 +24,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <cassert>
 #include "Body.h"
 #include "Exception.h"
 #include "Joint.h"

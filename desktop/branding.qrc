@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/branding">
+        <file alias="icon.ico">../robotics-library.ico</file>
+    </qresource>
+</RCC>

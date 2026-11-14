@@ -24,6 +24,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <cassert>
 #include "SequentialVerifier.h"
 #include "SimpleModel.h"
 

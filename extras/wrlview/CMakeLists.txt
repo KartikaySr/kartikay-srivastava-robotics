@@ -63,6 +63,8 @@ if(Coin_FOUND AND OPENGL_FOUND AND QT_FOUND AND SoQt_FOUND)
 	endif()
 	cmake_pop_check_state()
 	
+	rl_add_desktop_resources(wrlview)
+
 	target_link_libraries(
 		wrlview
 		Coin::Coin
@@ -109,7 +111,7 @@ if(Coin_FOUND AND OPENGL_FOUND AND QT_FOUND AND SoQt_FOUND)
 	
 	if(UNIX)
 		install(FILES wrlview.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications COMPONENT extras)
-		install(FILES wrlview.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps COMPONENT extras)
+		install(FILES ${rl_SOURCE_DIR}/robotics-library.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps COMPONENT extras)
 	endif()
 	
 	set(

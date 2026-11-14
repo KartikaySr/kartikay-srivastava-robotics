@@ -25,6 +25,7 @@
 //
 
 #include <QApplication>
+#include "Application.h"
 #include <QMessageBox>
 #include <stdexcept>
 
@@ -36,6 +37,7 @@ int
 main(int argc, char** argv)
 {
 	QApplication application(argc, argv);
+	configureDesktopApplication();
 	
 	if (argc < 3)
 	{

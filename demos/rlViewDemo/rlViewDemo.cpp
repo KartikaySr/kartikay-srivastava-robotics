@@ -25,6 +25,7 @@
 //
 
 #include <QApplication>
+#include "Application.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QWidget>
@@ -43,6 +44,8 @@ main(int argc, char** argv)
 		SoDB::init();
 		
 		QWidget* widget = SoQt::init(argc, argv, argv[0]);
+		configureDesktopApplication();
+		widget->setWindowIcon(QApplication::windowIcon());
 		widget->resize(800, 600);
 		
 		QString filename;
@@ -79,6 +82,7 @@ main(int argc, char** argv)
 	catch (const std::exception& e)
 	{
 		QApplication application(argc, argv);
+		configureDesktopApplication();
 		QMessageBox::critical(nullptr, "Error", e.what());
 		return EXIT_FAILURE;
 	}

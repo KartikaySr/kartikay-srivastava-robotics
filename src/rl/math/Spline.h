@@ -27,6 +27,7 @@
 #ifndef RL_MATH_SPLINE_H
 #define RL_MATH_SPLINE_H
 
+#include <cassert>
 #include <limits>
 #include <vector>
 

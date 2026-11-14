@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <QApplication>
+#include "Application.h"
 #include <stdexcept>
 
 #include "MainWindow.h"
@@ -36,6 +37,7 @@ main(int argc, char** argv)
 	try
 	{
 		QApplication application(argc, argv);
+		configureDesktopApplication();
 		
 		QObject::connect(&application, SIGNAL(lastWindowClosed()), &application, SLOT(quit()));
 		

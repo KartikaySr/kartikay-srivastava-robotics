@@ -24,6 +24,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <cassert>
 #include <rl/sg/Body.h>
 #include <rl/sg/DistanceScene.h>
 

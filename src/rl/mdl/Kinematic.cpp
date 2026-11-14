@@ -24,6 +24,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //
 
+#include <cassert>
 #include <algorithm>
 #include <stack>
 #include <rl/math/Quaternion.h>

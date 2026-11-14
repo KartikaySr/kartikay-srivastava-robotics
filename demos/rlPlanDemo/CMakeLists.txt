@@ -60,6 +60,8 @@ if(QT_FOUND AND SoQt_FOUND AND (RL_BUILD_SG_BULLET OR RL_BUILD_SG_FCL OR RL_BUIL
 		${rl_BINARY_DIR}/robotics-library.rc
 	)
 	
+	rl_add_desktop_resources(rlPlanDemo)
+
 	target_link_libraries(
 		rlPlanDemo
 		plan

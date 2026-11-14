@@ -25,6 +25,7 @@
 //
 
 #include <QApplication>
+#include "Application.h"
 #include <QMetaType>
 #include <QMessageBox>
 #include <stdexcept>
@@ -43,6 +44,7 @@ main(int argc, char** argv)
 	try
 	{
 		QApplication application(argc, argv);
+		configureDesktopApplication();
 		
 		qRegisterMetaType<rl::math::Real>("rl::math::Real");
 		qRegisterMetaType<rl::math::Transform>("rl::math::Transform");
@@ -59,6 +61,7 @@ main(int argc, char** argv)
 	catch (const std::exception& e)
 	{
 		QApplication application(argc, argv);
+		configureDesktopApplication();
 		QMessageBox::critical(nullptr, "Error", e.what());
 		return EXIT_FAILURE;
 	}
