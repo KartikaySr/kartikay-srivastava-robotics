@@ -823,7 +823,7 @@ MainWindow::load(const QString& filename)
 	}
 	
 	this->filename = filename;
-	this->setWindowTitle(filename + " - " + this->engine.toUpper() + " - Kartikay Srivastava Robotics - rlPlanDemo");
+	this->setWindowTitle(filename + " - " + this->engine.toUpper() + " - Kartikay Srivastava Robotics - Motion Planner");
 	
 	rl::xml::Path path(document);
 	

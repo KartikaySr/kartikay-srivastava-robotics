@@ -4,6 +4,6 @@ Comment=Developed by Kartikay Srivastava. Collision detection and distance compu
 Exec=sh -c "rlCollisionDemo $(dirname %k)/../rl-@PROJECT_VERSION@/examples/rlsg/scene.xml"
 Icon=robotics-library
 Keywords=Collision;Detection;Distance;Robot;Robotics;
-Name=Kartikay Srivastava Robotics - rlCollisionDemo
+Name=Kartikay Srivastava Robotics - Collision Inspector
 Type=Application
 X-Unity-IconBackgroundColor=#ffffff

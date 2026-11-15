@@ -25,6 +25,7 @@
 //
 
 #include <QApplication>
+#include "Application.h"
 #include <QDateTime>
 #include <QHeaderView>
 #include <QStatusBar>
@@ -94,7 +95,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 #endif
 	
 	std::shared_ptr<rl::sg::Factory> geometryFactory;
-	std::string geometryFilename = QApplication::arguments()[1].toStdString();
+	std::string geometryFilename = desktopArguments()[1].toStdString();
 	
 	if ("urdf" == geometryFilename.substr(geometryFilename.length() - 4, 4))
 	{
@@ -108,10 +109,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	this->scene = std::make_shared<rl::sg::so::Scene>();
 	geometryFactory->load(geometryFilename, this->scene.get());
 	
-	for (int i = 2; i < QApplication::arguments().size(); ++i)
+	for (int i = 2; i < desktopArguments().size(); ++i)
 	{
 		std::shared_ptr<rl::mdl::Factory> kinematicFactory;
-		std::string kinematicFilename = QApplication::arguments()[i].toStdString();
+		std::string kinematicFilename = desktopArguments()[i].toStdString();
 		
 		if ("urdf" == kinematicFilename.substr(kinematicFilename.length() - 4, 4))
 		{
@@ -191,11 +192,11 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	
 	this->configurationDockWidget->resize(160, 320);
 	this->configurationDockWidget->setWidget(this->configurationTabWidget);
-	this->configurationDockWidget->setWindowTitle("Configuration");
+	this->configurationDockWidget->setWindowTitle("Joint positions");
 	
 	this->operationalDockWidget->resize(160, 320);
 	this->operationalDockWidget->setWidget(this->operationalTabWidget);
-	this->operationalDockWidget->setWindowTitle("Operational");
+	this->operationalDockWidget->setWindowTitle("Tool pose");
 	
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->configurationDockWidget);
 	this->addDockWidget(Qt::BottomDockWidgetArea, this->operationalDockWidget);
@@ -268,7 +269,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	this->resize(1024, 768);
 	this->setCentralWidget(this->viewer->getWidget());
 	this->setWindowIconText("rlCoachMdl");
-	this->setWindowTitle("Kartikay Srivastava Robotics - rlCoachMdl");
+	this->setWindowTitle("Kartikay Srivastava Robotics - Robot Kinematics");
 	
 	this->init();
 	

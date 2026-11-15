@@ -4,6 +4,6 @@ Comment=Developed by Kartikay Srivastava. Visualization and kinematics demo with
 Exec=sh -c "rlCoachKin $(dirname %k)/../rl-@PROJECT_VERSION@/examples/rlsg/unimation-puma560_boxes.xml $(dirname %k)/../rl-@PROJECT_VERSION@/examples/rlkin/unimation-puma560.xml"
 Icon=robotics-library
 Keywords=Coach;Kinematics;Library;Puma;Robot;Robotics;Visualization;
-Name=Kartikay Srivastava Robotics - rlCoachKin
+Name=Kartikay Srivastava Robotics - Robot Kinematics (DH)
 Type=Application
 X-Unity-IconBackgroundColor=#ffffff

@@ -4,6 +4,6 @@ Comment=Developed by Kartikay Srivastava. Visualization demo with Unimation Puma
 Exec=sh -c "rlViewDemo $(dirname %k)/../rl-@PROJECT_VERSION@/examples/rlsg/unimation-puma560_boxes.xml"
 Icon=robotics-library
 Keywords=Library;Puma;Robot;Robotics;Visualization;
-Name=Kartikay Srivastava Robotics - rlViewDemo
+Name=Kartikay Srivastava Robotics - Scene Viewer
 Type=Application
 X-Unity-IconBackgroundColor=#ffffff

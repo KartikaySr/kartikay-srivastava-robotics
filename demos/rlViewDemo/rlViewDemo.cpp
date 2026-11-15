@@ -72,7 +72,7 @@ main(int argc, char** argv)
 		viewer.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
 		viewer.show();
 		
-		widget->setWindowTitle(filename + (filename.isEmpty() ? "" : " - ") + "Kartikay Srivastava Robotics - rlViewDemo");
+		widget->setWindowTitle(filename + (filename.isEmpty() ? "" : " - ") + "Kartikay Srivastava Robotics - Scene Viewer");
 		
 		SoQt::show(widget);
 		SoQt::mainLoop();

@@ -4,6 +4,6 @@ Comment=Developed by Kartikay Srivastava. Path planning demo with Unimation Puma
 Exec=sh -c "rlPlanDemo $(dirname %k)/../rl-@PROJECT_VERSION@/examples/rlplan/unimation-puma560_boxes_rrtConCon.mdl.xml"
 Icon=robotics-library
 Keywords=Library;Motion;Path;Planning;Puma;Robot;Robotics;RRT;
-Name=Kartikay Srivastava Robotics - rlPlanDemo
+Name=Kartikay Srivastava Robotics - Motion Planner
 Type=Application
 X-Unity-IconBackgroundColor=#ffffff

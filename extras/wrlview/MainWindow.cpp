@@ -658,7 +658,7 @@ MainWindow::load(const QString filename)
 	}
 	
 	this->filename = absoluteFilename;
-	this->setWindowTitle("Kartikay Srivastava Robotics - wrlview");
+	this->setWindowTitle("Kartikay Srivastava Robotics - 3D Model Viewer");
 	
 #if defined(HAVE_SOSTLFILEKIT_H) && defined(HAVE_SOSTLFILEKIT_CONVERT)
 	if (absoluteFilename.endsWith(".stl", Qt::CaseInsensitive))
@@ -697,7 +697,7 @@ MainWindow::load(const QString filename)
 	}
 	
 	this->root->addChild(this->scene);
-	this->setWindowTitle(absoluteFilename + " - Kartikay Srivastava Robotics - wrlview");
+	this->setWindowTitle(absoluteFilename + " - Kartikay Srivastava Robotics - 3D Model Viewer");
 }
 
 void

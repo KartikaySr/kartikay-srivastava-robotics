@@ -32,7 +32,9 @@ brew install cmake boost eigen coin3d qtbase fcl libxml2 libxslt
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$(brew --prefix);$(brew --prefix qtbase);$(brew --prefix libxml2);$(brew --prefix libxslt)"
 ```
 
-Launch the rotation converter directly, or open the included Puma robot in the kinematics and dynamics applications:
+Open **Kartikay Srivastava Robotics.app** in `build/bin` on macOS, or run `build/bin/rlRobotics` (`rlRobotics.exe` on Windows). The workspace provides one-click examples, custom scene/model file selection, a remembered examples folder, and guidance for each tool. The kinematics and dynamics applications also open the included Puma robot when launched without arguments.
+
+You can also launch individual tools directly:
 
 ```sh
 ./build/bin/rlRotationConverterDemo

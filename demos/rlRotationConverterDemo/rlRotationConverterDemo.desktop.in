@@ -4,6 +4,6 @@ Comment=Developed by Kartikay Srivastava. Rotation conversion demo for axis-angl
 Exec=rlRotationConverterDemo
 Icon=robotics-library
 Keywords=Angle;Axis;Euler;Library;Matrix;Quaternion;Robot;Robotics;Rotation;
-Name=Kartikay Srivastava Robotics - rlRotationConverterDemo
+Name=Kartikay Srivastava Robotics - Rotation Converter
 Type=Application
 X-Unity-IconBackgroundColor=#ffffff

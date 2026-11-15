@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	outputUnitRadians(false)
 {
 	MainWindow::singleton = this;
-	this->setWindowTitle("Kartikay Srivastava Robotics - rlRotationConverterDemo");
+	this->setWindowTitle("Kartikay Srivastava Robotics - Rotation Converter");
 	
 	this->inputEulerAxes[0] = 0;
 	this->inputEulerAxes[1] = 1;

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Kartikay Srivastava Robotics
+Comment=Explore robot movement, dynamics and collision-free paths
+Exec=rlRobotics
+Icon=robotics-library
+Categories=Science;Robotics;
+Terminal=false

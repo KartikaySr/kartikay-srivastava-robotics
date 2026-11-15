@@ -180,8 +180,12 @@ if(RL_BUILD_EXTRAS)
 	add_subdirectory(extras)
 endif()
 
+if(RL_BUILD_DEMOS)
+	add_subdirectory(desktop)
+endif()
+
 if(RL_REQUIRE_DESKTOP)
-	foreach(app rlCoachKin rlCoachMdl rlCollisionDemo rlPlanDemo rlRotationConverterDemo rlSimulator rlViewDemo wrlview)
+	foreach(app rlRobotics rlCoachKin rlCoachMdl rlCollisionDemo rlPlanDemo rlRotationConverterDemo rlSimulator rlViewDemo wrlview)
 		if(NOT TARGET ${app})
 			message(FATAL_ERROR "Desktop application ${app} is unavailable. Enable demos/extras and install matching Qt, Coin and SoQt dependencies.")
 		endif()

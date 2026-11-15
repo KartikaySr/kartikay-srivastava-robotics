@@ -188,7 +188,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	this->setCentralWidget(this->viewer->getWidget());
 	this->setFocusProxy(this->viewer->getWidget());
 	
-	this->setWindowTitle(filename + " - " + this->engine.toUpper() + " - Kartikay Srivastava Robotics - rlCollisionDemo");
+	this->setWindowTitle(filename + " - " + this->engine.toUpper() + " - Kartikay Srivastava Robotics - Collision Inspector");
 	
 	rl::sg::XmlFactory factory;
 	factory.load(this->filename.toStdString(), this->collisionScene.get());

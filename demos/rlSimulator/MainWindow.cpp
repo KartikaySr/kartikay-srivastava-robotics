@@ -26,6 +26,7 @@
 
 #include <chrono>
 #include <QApplication>
+#include "Application.h"
 #include <QDateTime>
 #include <QHeaderView>
 #include <QGroupBox>
@@ -131,12 +132,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	
 	this->scene = std::make_shared<rl::sg::so::Scene>();
 	rl::sg::XmlFactory geometryFactory;
-	geometryFactory.load(QApplication::arguments()[1].toStdString(), this->scene.get());
+	geometryFactory.load(desktopArguments()[1].toStdString(), this->scene.get());
 	
 	rl::mdl::XmlFactory kinematicFactory;
 	
 	this->geometryModels = this->scene->getModel(0);
-	this->dynamicModel = std::dynamic_pointer_cast<rl::mdl::Dynamic>(kinematicFactory.create(QApplication::arguments()[2].toStdString()));
+	this->dynamicModel = std::dynamic_pointer_cast<rl::mdl::Dynamic>(kinematicFactory.create(desktopArguments()[2].toStdString()));
 	this->simulationResetQ = rl::math::Vector::Zero(this->dynamicModel->getDofPosition());
 	this->simulationResetQd = rl::math::Vector::Zero(this->dynamicModel->getDof());
 	this->simulationResetQdd = rl::math::Vector::Zero(this->dynamicModel->getDof());
@@ -263,7 +264,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	QHBoxLayout* simulationHorizontalLayout = new QHBoxLayout();
 	
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->simulationDockWidget);
-	this->simulationDockWidget->setWindowTitle("Control");
+	this->simulationDockWidget->setWindowTitle("Simulation controls");
 	this->simulationDockWidget->setWidget(simulationDockWidgetContent);
 	simulationDockWidgetContent->setLayout(simulationVerticalLayout);
 	simulationVerticalLayout->addWidget(simulationGroup);
@@ -321,23 +322,23 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	
 	this->addDockWidget(Qt::RightDockWidgetArea, this->positionDockWidget);
 	this->positionDockWidget->setWidget(this->positionView);
-	this->positionDockWidget->setWindowTitle("Position");
+	this->positionDockWidget->setWindowTitle("Joint positions");
 	
 	this->addDockWidget(Qt::RightDockWidgetArea, this->velocityDockWidget);
 	this->velocityDockWidget->setWidget(this->velocityView);
-	this->velocityDockWidget->setWindowTitle("Velocity");
+	this->velocityDockWidget->setWindowTitle("Joint velocities");
 	
 	this->addDockWidget(Qt::RightDockWidgetArea, this->accelerationDockWidget);
 	this->accelerationDockWidget->setWidget(this->accelerationView);
-	this->accelerationDockWidget->setWindowTitle("Acceleration");
+	this->accelerationDockWidget->setWindowTitle("Joint accelerations");
 	
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->torqueDockWidget);
 	this->torqueDockWidget->setWidget(this->torqueView);
-	this->torqueDockWidget->setWindowTitle("Torque");
+	this->torqueDockWidget->setWindowTitle("Joint torques");
 	
 	this->addDockWidget(Qt::BottomDockWidgetArea, this->operationalDockWidget);
 	this->operationalDockWidget->setWidget(this->operationalViews);
-	this->operationalDockWidget->setWindowTitle("Operational Position");
+	this->operationalDockWidget->setWindowTitle("Tool pose");
 	
 #if QT_VERSION >= 0x050600
 	QList<QDockWidget*> resizeDocksWidgets;
@@ -375,7 +376,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	this->resize(1024, 768);
 	this->setCentralWidget(this->viewer->getWidget());
 	this->setWindowIconText("rlSimulator");
-	this->setWindowTitle("Kartikay Srivastava Robotics - rlSimulator");
+	this->setWindowTitle("Kartikay Srivastava Robotics - Dynamics Simulator");
 	
 	this->init();
 	

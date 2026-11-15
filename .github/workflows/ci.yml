@@ -274,7 +274,9 @@ jobs:
       - name: Smoke-test installed desktop
         run: |
           cmake --install "${{ runner.workspace }}/rl-build" --prefix "${{ runner.workspace }}/rl-install"
-          QT_QPA_PLATFORM=offscreen timeout 5 "${{ runner.workspace }}/rl-install/bin/rlRotationConverterDemo" || test "$?" -eq 124
+          for tool in rlRobotics rlRotationConverterDemo; do
+            QT_QPA_PLATFORM=offscreen timeout 5 "${{ runner.workspace }}/rl-install/bin/$tool" || test "$?" -eq 124
+          done
       - name: Create archive
         working-directory: ${{ runner.workspace }}/rl-build
         run: cpack -G TXZ

@@ -25,6 +25,7 @@
 //
 
 #include <QApplication>
+#include "Application.h"
 #include <QDateTime>
 #include <QHeaderView>
 #include <Inventor/actions/SoWriteAction.h>
@@ -84,13 +85,13 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	
 	this->scene = std::make_shared<rl::sg::so::Scene>();
 	rl::sg::XmlFactory geometryFactory;
-	geometryFactory.load(QApplication::arguments()[1].toStdString(), this->scene.get());
+	geometryFactory.load(desktopArguments()[1].toStdString(), this->scene.get());
 	rl::kin::XmlFactory kinematicFactory;
 	
-	for (int i = 2; i < QApplication::arguments().size(); ++i)
+	for (int i = 2; i < desktopArguments().size(); ++i)
 	{
 		this->geometryModels.push_back(this->scene->getModel(i - 2));
-		this->kinematicModels.push_back(kinematicFactory.create(QApplication::arguments()[i].toStdString()));
+		this->kinematicModels.push_back(kinematicFactory.create(desktopArguments()[i].toStdString()));
 	}
 	
 	for (std::size_t i = 0; i < this->kinematicModels.size(); ++i)
@@ -158,11 +159,11 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	
 	this->configurationDockWidget->resize(160, 320);
 	this->configurationDockWidget->setWidget(this->configurationTabWidget);
-	this->configurationDockWidget->setWindowTitle("Configuration");
+	this->configurationDockWidget->setWindowTitle("Joint positions");
 	
 	this->operationalDockWidget->resize(160, 320);
 	this->operationalDockWidget->setWidget(this->operationalTabWidget);
-	this->operationalDockWidget->setWindowTitle("Operational");
+	this->operationalDockWidget->setWindowTitle("Tool pose");
 	
 	this->addDockWidget(Qt::LeftDockWidgetArea, this->configurationDockWidget);
 	this->addDockWidget(Qt::BottomDockWidgetArea, this->operationalDockWidget);
@@ -199,7 +200,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f) :
 	this->resize(1024, 768);
 	this->setCentralWidget(this->viewer->getWidget());
 	this->setWindowIconText("rlCoachKin");
-	this->setWindowTitle("Kartikay Srivastava Robotics - rlCoachKin");
+	this->setWindowTitle("Kartikay Srivastava Robotics - Robot Kinematics (DH)");
 	
 	this->init();
 	

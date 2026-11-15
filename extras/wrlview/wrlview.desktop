@@ -5,5 +5,5 @@ Exec=wrlview %f
 Icon=robotics-library
 Keywords=Inventor;Open;Viewer;VRML;
 MimeType=graphics/x-inventor;model/vrml;object/x-inventor;x-world/x-vrml;
-Name=Kartikay Srivastava Robotics - wrlview
+Name=Kartikay Srivastava Robotics - 3D Model Viewer
 Type=Application

@@ -39,11 +39,8 @@ main(int argc, char** argv)
 	QApplication application(argc, argv);
 	configureDesktopApplication();
 	
-	if (argc < 3)
-	{
-		QMessageBox::information(nullptr, "Usage", "rlCoachMdl SCENEFILE MODELFILE1 ... MODELFILEn");
-		return EXIT_FAILURE;
-	}
+	if (!prepareRobotArguments(false))
+		return EXIT_SUCCESS;
 	
 	try
 	{
@@ -61,7 +58,8 @@ main(int argc, char** argv)
 	}
 	catch (const std::exception& e)
 	{
-		QMessageBox::critical(nullptr, "Error", e.what());
+		QMessageBox::critical(nullptr, "Could not open robot",
+			QString("Check that the scene and model describe the same robot and that referenced files are available.\n\n%1").arg(e.what()));
 		return EXIT_FAILURE;
 	}
 }
